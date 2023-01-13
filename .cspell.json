@@ -21,6 +21,7 @@
     "sandboxed",
     "transpiled",
     "typedoc",
+    "unburrito",
     "untracked"
   ],
   "flagWords": [],
