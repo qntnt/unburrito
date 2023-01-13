@@ -47,7 +47,7 @@ export class Burrito<
     return (burritoLike as Burrito<T>).fillingSequence !== undefined;
   }
 
-  private static from<T>(burritoLike: BurritoSource<T>): Burrito<T> {
+  private static from<T>(burritoLike: BurritoLike<T>): Burrito<T> {
     if (Burrito.isBurrito(burritoLike)) {
       return burritoLike;
     }
@@ -131,7 +131,7 @@ export class Burrito<
     return this.fillingSequence.subscribe(observer);
   }
 
-  static wrap<T>(fillingSource: BurritoSource<T>): Burrito<T> {
+  static wrap<T>(fillingSource: BurritoLike<T>): Burrito<T> {
     return Burrito.from(fillingSource);
   }
 

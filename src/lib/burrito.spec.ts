@@ -3,6 +3,13 @@ import { delay, from } from 'rxjs';
 
 import { Burrito } from './burrito';
 
+
+test('fromBurrito', async (t) => {
+  const b = Burrito.wrap([1])
+  const burrito = Burrito.wrap(b)
+  const result = await burrito.collect()
+  t.deepEqual(result, [1])
+})
 test('fromPromise', async (t) => {
   const promise = new Promise((resolve) => {
     setTimeout(() => resolve(1), 200);
@@ -62,7 +69,14 @@ test('tortilla', async (t) => {
   t.deepEqual(nev, []);
 });
 
-test('switchMap', async (t) => {
+test('switchMapObservable', async (t) => {
+  const burrito = Burrito.wrapAll(1, 2, 3)
+  const delayed = from([1]).pipe(delay(100))
+  const result = await burrito.switchMap(() => delayed).collect()
+  t.deepEqual(result, [1])
+})
+
+test('switchMapBurrito', async (t) => {
   const burrito = Burrito.wrapAll(1, 2, 3);
   const delayed = Burrito.wrapAll(1).pipe(delay(100));
   const result = await burrito.switchMap(() => delayed).collect();
