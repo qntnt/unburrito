@@ -63,10 +63,10 @@ test('flattenBurrito', async (t) => {
 });
 
 test('flattenObservable', async (t) => {
-  const burrito = Burrito.wrapAll(1, 2, 3)
-  const result = burrito.map(() => from([1,2,3]))
-  const flattened = await Burrito.flatten(result).collect()
-  t.deepEqual(flattened, [1, 2, 3, 1, 2, 3, 1, 2, 3])
+  const burrito = Burrito.wrapAll(1, 2, 3);
+  const result = burrito.map(() => from([1, 2, 3]));
+  const flattened = await Burrito.flatten(result).collect();
+  t.deepEqual(flattened, [1, 2, 3, 1, 2, 3, 1, 2, 3]);
 });
 
 test('tortilla', async (t) => {
@@ -128,10 +128,10 @@ test('throttleTime', async (t) => {
 });
 
 test('delay', async (t) => {
-  const burrito = Burrito.wrapAll(1, 2, 3)
-  const result = await burrito.delay(100).collect()
-  t.deepEqual(result, [1, 2, 3])
-})
+  const burrito = Burrito.wrapAll(1, 2, 3);
+  const result = await burrito.delay(100).collect();
+  t.deepEqual(result, [1, 2, 3]);
+});
 
 test('unwrap', async (t) => {
   const burrito = Burrito.wrapAll(1, 2, 3);
@@ -142,11 +142,11 @@ test('unwrap', async (t) => {
 });
 
 test('subscribe', async (t) => {
-  const burrito = Burrito.wrapAll(1, 2, 3)
-  const values = []
+  const burrito = Burrito.wrapAll(1, 2, 3);
+  const values = [];
   burrito.subscribe({
-    next: v => values.push(v),
-  })
-  await burrito.collect()
-  t.deepEqual(values, [1,2,3])
-})
+    next: (v) => values.push(v),
+  });
+  await burrito.collect();
+  t.deepEqual(values, [1, 2, 3]);
+});

@@ -21,7 +21,7 @@ type BurritoObserver<Value> =
   | Partial<Observer<Value>>
   | ((value: Value) => void);
 
-type BurritoLike<T> = BurritoSource<T> | Burrito<T>;
+export type BurritoLike<T> = BurritoSource<T> | Burrito<T>;
 
 type TimeFillingSequence<T> = Observable<T>;
 type FillingSequence<T> = TimeFillingSequence<T>;
