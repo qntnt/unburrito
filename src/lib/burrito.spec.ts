@@ -3,13 +3,12 @@ import { delay, from } from 'rxjs';
 
 import { Burrito } from './burrito';
 
-
 test('fromBurrito', async (t) => {
-  const b = Burrito.wrap([1])
-  const burrito = Burrito.wrap(b)
-  const result = await burrito.collect()
-  t.deepEqual(result, [1])
-})
+  const b = Burrito.wrap([1]);
+  const burrito = Burrito.wrap(b);
+  const result = await burrito.collect();
+  t.deepEqual(result, [1]);
+});
 test('fromPromise', async (t) => {
   const promise = new Promise((resolve) => {
     setTimeout(() => resolve(1), 200);
@@ -56,11 +55,18 @@ test('filter', async (t) => {
   t.deepEqual(result, [2, 4]);
 });
 
-test('flatten', async (t) => {
+test('flattenBurrito', async (t) => {
   const burrito = Burrito.wrapAll(1, 2, 3);
   const result = burrito.map(() => Burrito.wrapAll(1, 2, 3));
   const flattened = await Burrito.flatten(result).collect();
   t.deepEqual(flattened, [1, 2, 3, 1, 2, 3, 1, 2, 3]);
+});
+
+test('flattenObservable', async (t) => {
+  const burrito = Burrito.wrapAll(1, 2, 3)
+  const result = burrito.map(() => from([1,2,3]))
+  const flattened = await Burrito.flatten(result).collect()
+  t.deepEqual(flattened, [1, 2, 3, 1, 2, 3, 1, 2, 3])
 });
 
 test('tortilla', async (t) => {
@@ -70,11 +76,11 @@ test('tortilla', async (t) => {
 });
 
 test('switchMapObservable', async (t) => {
-  const burrito = Burrito.wrapAll(1, 2, 3)
-  const delayed = from([1]).pipe(delay(100))
-  const result = await burrito.switchMap(() => delayed).collect()
-  t.deepEqual(result, [1])
-})
+  const burrito = Burrito.wrapAll(1, 2, 3);
+  const delayed = from([1]).pipe(delay(100));
+  const result = await burrito.switchMap(() => delayed).collect();
+  t.deepEqual(result, [1]);
+});
 
 test('switchMapBurrito', async (t) => {
   const burrito = Burrito.wrapAll(1, 2, 3);
@@ -121,6 +127,12 @@ test('throttleTime', async (t) => {
   t.deepEqual(result, [1]);
 });
 
+test('delay', async (t) => {
+  const burrito = Burrito.wrapAll(1, 2, 3)
+  const result = await burrito.delay(100).collect()
+  t.deepEqual(result, [1, 2, 3])
+})
+
 test('unwrap', async (t) => {
   const burrito = Burrito.wrapAll(1, 2, 3);
   const result = burrito.unwrap();
@@ -128,3 +140,13 @@ test('unwrap', async (t) => {
   await result.forEach((v) => values.push(v));
   t.deepEqual(values, [1, 2, 3]);
 });
+
+test('subscribe', async (t) => {
+  const burrito = Burrito.wrapAll(1, 2, 3)
+  const values = []
+  burrito.subscribe({
+    next: values.push,
+  })
+  await burrito.collect()
+  t.deepEqual(values, [1,2,3])
+})
