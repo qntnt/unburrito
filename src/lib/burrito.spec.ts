@@ -145,7 +145,7 @@ test('subscribe', async (t) => {
   const burrito = Burrito.wrapAll(1, 2, 3)
   const values = []
   burrito.subscribe({
-    next: values.push,
+    next: v => values.push(v),
   })
   await burrito.collect()
   t.deepEqual(values, [1,2,3])
