@@ -1,6 +1,6 @@
 {
   "name": "unburrito",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A library that unifies wrapped data types",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
